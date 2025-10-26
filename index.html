@@ -1,0 +1,496 @@
+<!--Menentukan dokumen ini menggunakan HTML5 agar browser menjelaskan struktur dan elemen HTML dengan standar terbaru-->
+<!DOCTYPE html>
+<!--Tag html menunjukkan awal dokumen HTML dan atribut lang="en" yang menunjukkan bahasa yang digunakan adalah bahasa inggris-->
+<html lang="en">
+<!--Bagian kepala halaman untuk metadata, pengaturan tampilan, dan judul halaman-->
+<head>
+    <!--Menetapkan set karakter UTF-8 agar teks dan simbol ditampilkan dengan benar-->
+    <meta charset="UTF-8">
+    <!--Mengatur viewport agar halaman dapat menyesuaikan ukuran layar perangkat-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Menampilkan judul “Document” di tab browser-->
+    <title>Document</title>
+    <!--Tempat untuk menulis kode CSS untuk mengatur tampilan web-->
+    <style>
+        /*Mengatur body sebagai wadah utama seluruh halaman dengan font Arial, latar biru tua, teks hitam, tanpa margin dan padding default agar konten menempel rapi*/
+        body{
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #1e445a;
+            color: #000000;
+        }
+        /*Sebagai wadah utama seluruh konten halaman dengan lebar maksimal, margin otomatis agar berada di tengah, padding, latar biru muda, dan sudut membulat*/
+        .container{
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px 30px;
+            background-color: #e4f4ff;
+            box-sizing: border-box;
+            border-radius: 15px;
+        }
+        /*Wrapper bagian atas untuk logo dan judul dengan layout kolom, rata tengah, dan teks di tengah*/
+        .contentwrapper.atas{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        /*Wrapper bagian bawah untuk menu kategori dan tabel dengan layout horizontal, jarak seimbang antar elemen, dan margin atas*/
+        .contentwrapper.bawah{
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: 30px;
+        }
+        /*Area logo dengan lebar 26%*/
+        .Logo{
+            width:26%;
+        }
+        /*Area judul utama dan subjudul dengan lebar 63%, margin kiri untuk posisi, dan teks rata tengah*/
+        .judul{
+            width:63%;
+            margin-left: 180px;
+            text-align: center;
+        }
+        /*Area menu kategori di kiri dengan teks rata kiri dan transisi halus saat hover/interaksi*/
+        .list{
+            width: 20%;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+         /*Area tabel untuk data statistik, lebar fleksibel, transisi halus saat interaksi*/
+        .table{
+            width:10%;
+            flex: 10;
+            margin-left: 0;
+            transition: all 0.3s ease;
+        }
+        /*Mengatur gambar logo dengan ukuran 150x150, sudut membulat, bayangan, efek pointer, margin kiri, dan transisi saat hover*/
+        .Logo img{
+            width: 150px;
+            height: 150px;
+            border-radius: 10px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            margin-left: 165%;
+        }
+        /*Efek hover pada logo yang memperbesar gambar sedikit*/
+        .Logo img:hover {
+            transform: scale(1.08);
+        }
+        /*Efek aktif pada logo memberikan animasi singkat saat diklik*/
+        .Logo img:active {
+            animation: clickGlow 0.5s;
+        }
+        /*Mengatur tabel data dengan lebar penuh, border collapse, margin atas, border biru, dan sudut membulat*/
+        .table table{
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            border-radius: 10px;
+            border: 1px solid rgb(134, 185, 236);
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+        /*Mengatur header tabel dengan background biru, font kecil, border hitam, dan bayangan*/
+        .table th{
+            border: 1px solid rgb(0, 0, 0);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            background-color: #5e93b3;
+            font-size: 12px;
+        }
+        /*Mengatur isi tabel dengan border, padding, teks rata tengah, background putih, dan font kecil*/
+        .table td{
+            border: 1px solid rgb(0, 0, 0);
+            padding: 8px;
+            text-align: center;
+            vertical-align: middle;
+            background-color: #ffffff;
+            font-size: 12px;
+        }
+        /*Efek hover pada baris tabel membuat baris sedikit terangkat dan bayangan lebih besar*/
+        .table tr:hover td{
+            cursor: pointer;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 15px #000000(100% 0 -0.00011 / 0.387);
+            transition: 0.3s;
+            cursor: pointer; 
+            background-color: #b2cedf;
+        }
+        /*Menandai baris aktif dengan warna biru muda*/
+        .active-row{
+            background-color: #cce5ff !important;
+        }
+        /*Mengatur jendela pop-up agar muncul di tengah layar dengan latar hitam transparan*/
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+        /*Konten modal berwarna putih, padding 15px, sudut membulat, lebar 350px, dan bayangan*/
+        .modal-content {
+            background: rgb(255, 255, 255);
+            padding: 15px;
+            border-radius: 15px;
+            width: 350px;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+        }
+        /*Tombol tutup modal di pojok kanan atas dengan pointer, font tebal, dan warna abu*/
+        .close-btn {
+            float: right;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            color: #888;
+        }
+        /*Warna tombol tutup menjadi merah saat diklik*/
+        .close-btn:hover {
+            color: #ff3333;
+        }
+        /*Judul modal berwarna biru gelap, tanpa margin atas, garis bawah biru, dan padding bawah*/
+        .modal-content h3 {
+            color: #004080;
+            margin-top: 0;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 5px;
+        }
+        /*Area teks modal dengan font 15px, warna abu gelap, teks rata kiri, dan mempertahankan format pre-wrap*/
+        #modalInfo {
+            white-space: pre-wrap;
+            font-size: 15px;
+            color: #333;
+            margin-top: 10px;
+            text-align: left;
+        }
+    </style>
+</head>
+<!--Body sebagai wadah utama seluruh konten halaman, mencakup container, logo, judul, menu, tabel, dan modal-->
+<body>
+    <!--Container utama mencakup semua konten agar rapi dan berada di tengah halaman-->
+    <div class="container">
+    <!--Wrapper atas untuk logo dan judul-->
+    <div class="contentwrapper">
+    <!--Membuat area khusus untuk logo. Didalamnya terdapat tag <img> yang menampilkan gambar logo Kabupaten Klaten dari folder HTML dengan nama file LOGO_KABUPATEN_KLATEN new.png-->
+    <div class="Logo"><img id="logo" src="LOGO_KABUPATEN_KLATEN new.png"></div>
+    <!--Judul utama dan subjudul, dapat diklik untuk menampilkan info di modal-->
+    <div class="judul" id="judulUtama">
+        <!--Menampilkan teks utama di bagian atas dengan ukuran besar karena memakai tag <h1>. Tulisan ini menjadi judul utama situs-->
+        <h1>SISTEM INFORMASI STATISTIK</h1>
+        <!--Menampilkan subjudul “Kabupaten Klaten” tepat di bawah judul utama-->
+        <h2>KABUPATEN KLATEN</h2>
+        <!--Menampilkan angka 2024 yang berada dibawah subjudul-->
+        <h3>2024</h3>
+    <!--Menutup elemen <div class="judul">-->
+    </div>
+    <!--Menutup elemen <div class="contentwrapper"> yang membungkus bagian logo dan judul-->
+    </div>
+
+    <!--Membuat pembungkus baru dengan kelas atas yang akan mengatur susunan bagian atas halaman menjadi lebih rapi dan terpusat-->
+    <div class="contentwrapper atas">
+        <div>
+    <!--Membuka bagian pembungkus bawah halaman untuk menu kategori dan tabel-->
+    <div class="contentwrapper bawah">
+    <!--Membuat area khusus berisi daftar menu atau kategori data statistik-->
+    <div class="list">
+        <!--Membuka daftar tidak berurutan, semua elemen daftar nanti ditulis dalam tag <il> -->
+        <ul>
+            <il>Penduduk</il><br>
+            <il>Geografi dan Iklim</il><br>
+            <il>Pemerintahan</il><br>
+            <il>Sosial</il><br>
+            <il>Pertanian</il><br>
+            <il>Industri</il><br>
+        </ul>
+    <!--Menutup elemen <div class="list"> yang membungkus daftar kategori-->
+    </div>
+    <!--Modal pop-up untuk menampilkan info ketika baris tabel, logo, atau judul diklik-->
+    <div class="table">
+        <!--Tabel utama untuk menampilkan data demografis kecamatan di Kabupaten Klaten-->
+        <table id="dataTable" border="1">
+            <!--Baris header yang berisi judul kolom-->
+            <tr> <!--Membuka baris tabel (table row) baru-->
+                <th>Kecamatan</th> <!--Membuat sel header (judul kolom) dalam tabel.-->
+                <th>Jumlah Penduduk (Ribu)</th>
+                <th>Laju Pertumbuhan Penduduk per Tahun</th>
+                <th>Persentase Penduduk</th>
+                <th>Kepadatan Penduduk per km persegi (Km^2)</th>
+                <th>Rasio Jenis Kelamin Penduduk</th>
+            </tr> <!--Menutup baris header-->
+                <!--Baris data kecamatan, yaitu setiap baris <tr> mewakili satu kecamatan dan berisi data demografis seperti jumlah penduduk, laju pertumbuhan, persentase penduduk, kepadatan, dan rasio jenis kelamin-->
+               <tr> <!--Membuka baris data pertama-->
+                <td>Prambanan</td> <!--Menyimpan sel atau data biasa dalam tabel.-->
+                <td>53.155,0</td>
+                <td>-0,62</td>
+                <td>4,08</td>
+                <td>2.037</td>
+                <td>98,6</td>
+            </tr> <!--Menutup baris data pertama-->
+               <tr>
+                <td>Gantiwarno</td>
+                <td>39.194,0</td>
+                <td>-2,92</td>
+                <td>3,01</td>
+                <td>1.482</td>
+                <td>99,2</td>
+            </tr>
+               <tr>
+                <td>Wedi</td>
+                <td>52.878,0</td>
+                <td>-1,93</td>
+                <td>4,06</td>
+                <td>2.014</td>
+                <td>98,5</td>
+            </tr>
+               <tr>
+                <td>Bayat</td>
+                <td>64.539,0</td>
+                <td>-1,78</td>
+                <td>4,95</td>
+                <td>1.533</td>
+                <td>100,1</td>
+            </tr>
+               <tr>
+                <td>Cawas</td>
+                <td>58.471,0</td>
+                <td>-1,48</td>
+                <td>4,49</td>
+                <td>1.627</td>
+                <td>97,4</td>
+            </tr>
+               <tr>
+                <td>Trucuk</td>
+                <td>80.923,0</td>
+                <td>-0,55</td>
+                <td>6,21</td>
+                <td>2.333</td>
+                <td>101,3</td>
+            </tr>
+               <tr>
+                <td>Kebonarum</td>
+                <td>19.973,0</td>
+                <td>-1,71</td>
+                <td>1,53</td>
+                <td>1.917</td>
+                <td>97,0</td>
+            </tr>
+               <tr>
+                <td>Jogonalan</td>
+                <td>60.168,0</td>
+                <td>-1,41</td>
+                <td>4,62</td>
+                <td>2.181</td>
+                <td>99,9</td>
+            </tr>
+               <tr>
+                <td>Manisrenggo</td>
+                <td>44.249,0</td>
+                <td>-0,57</td>
+                <td>3,40</td>
+                <td>1.446</td>
+                <td>98,6</td>
+            </tr>
+               <tr>
+                <td>Karangnongko</td>
+                <td>37.649,0</td>
+                <td>-0,87</td>
+                <td>2,89</td>
+                <td>1.277</td>
+                <td>97,8</td>
+            </tr>
+            <tr>
+                <td>Ngawen</td>
+                <td>46.330,0</td>
+                <td>0,31</td>
+                <td>3,56</td>
+                <td>2.511</td>
+                <td>100,4</td>
+            </tr>
+            <tr>
+                <td>Ceper</td>
+                <td>66.205,0</td>
+                <td>-1,32</td>
+                <td>5,08</td>
+                <td>2.569</td>
+                <td>99,3</td>
+            </tr>
+            <tr>
+                <td>Pedan</td>
+                <td>47.803,0</td>
+                <td>-1,26</td>
+                <td>3,67</td>
+                <td>2.390</td>
+                <td>100,2</td>
+            </tr>
+            <tr>
+                <td>Karangdowo</td>
+                <td>43.950,0</td>
+                <td>-1,63</td>
+                <td>3,37</td>
+                <td>1.426</td>
+                <td>98,2</td>
+            </tr>
+            <tr>
+                <td>Juwiring</td>
+                <td>59.375,0</td>
+                <td>-0,33</td>
+                <td>4,56</td>
+                <td>1.922</td>
+                <td>99,5</td>
+            </tr>
+            <tr>
+                <td>Wonosari</td>
+                <td>64.387,0</td>
+                <td>0,68</td>
+                <td>4,94</td>
+                <td>1.929</td>
+                <td>99,2</td>
+            </tr>
+            <tr>
+                <td>Delanggu</td>
+                <td>42.605,0</td>
+                <td>0,29</td>
+                <td>3,27</td>
+                <td>2.127</td>
+                <td>98,2</td>
+            </tr>
+            <tr>
+                <td>Polanharjo</td>
+                <td>41.435,0</td>
+                <td>0,26</td>
+                <td>3,18</td>
+                <td>1.643</td>
+                <td>97,1</td>
+            </tr>
+            <tr>
+                <td>Karanganom</td>
+                <td>47.453,0</td>
+                <td>0,72</td>
+                <td>3,64</td>
+                <td>1.852</td>
+                <td>97,9</td>
+            </tr>
+            <tr>
+                <td>Tulung</td>
+                <td>55.157,0</td>
+                <td>0,78</td>
+                <td>4,23</td>
+                <td>1.602</td>
+                <td>99,2</td>
+            </tr>
+            <tr>
+                <td>Jatinom</td>
+                <td>62.064,0</td>
+                <td>0,85</td>
+                <td>4,76</td>
+                <td>1.672</td>
+                <td>100,0</td>
+            </tr>
+            <tr>
+                <td>Kemalang</td>
+                <td>40.656,0</td>
+                <td>0,92</td>
+                <td>3,12</td>
+                <td>675</td>
+                <td>98,9</td>
+            </tr>
+            <tr>
+                <td>Klaten Selatan</td>
+                <td>45.399,0</td>
+                <td>0,92</td>
+                <td>3,49</td>
+                <td>3009</td>
+                <td>97,6</td>
+            </tr>
+            <tr>
+                <td>Klaten Tengah</td>
+                <td>41.763,0</td>
+                <td>0,18</td>
+                <td>3,21</td>
+                <td>4.355</td>
+                <td>96,6</td>
+            </tr>
+            <tr>
+                <td>Klaten Utara</td>
+                <td>49.060,0</td>
+                <td>0,61</td>
+                <td>3,77</td>
+                <td>4.392</td>
+                <td>98,0</td>
+            </tr>
+        <!--Menutup tabel utama-->
+        </table>
+        <!--Menutup elemen <div class="table"> yang menjadi wadah keseluruhan tabel statistik-->
+        </div>
+         <!--Modal pop-up untuk menampilkan info ketika baris tabel, logo, atau judul diklik-->
+        <div class="modal" id="myModal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeModal()">x</span>
+                <h3>Info Kecamatan</h3>
+                <pre id="modalInfo"></pre>
+            </div>
+        </div>
+        <!--Script ini berfungsi untuk menambahkan interaktivitas pada tabel data, logo, judul utama, dan menu kategori sehingga saat baris tabel, logo, judul, atau item menu diklik, informasi terkait ditampilkan dalam modal, dan baris atau item yang aktif ditandai secara visual-->
+        <script>
+            //Menambahkan event click ke tiap baris
+            const rows = document.querySelectorAll("#dataTable tr");
+            rows.forEach((row, index) => {
+                if (index === 0) return;
+                row.addEventListener("click", () => {
+                    rows.forEach(r => r.classList.remove("active-row"));
+                    row.classList.add("active-row");
+                    const cells = row.querySelectorAll("td");
+                    const info =`
+        Kecamatan: ${cells[0].innerText}
+        Jumlah Penduduk: ${cells[1].innerText}
+        Laju Pertumbuhan: ${cells[2].innerText}
+        Persentase Penduduk: ${cells[3].innerText}
+        Kepadatan: ${cells[4].innerText}
+        Rasio Jenis Kelamin: ${cells[5].innerText}
+                    `;
+                    //Menampikan modal dengan info baris
+                    showInfo(info);
+                });
+            });
+             //Memberikan fungsi klik pada logo, saat diklik akan menampilkan info logo
+            document.getElementById("logo").addEventListener("click", () => {
+                showInfo("Logo Kabupaten Klaten\nSimbol identitas dan kebanggaan daerah Klaten.");
+            });
+             //Kode ini memberikan fungsi klik pada judul utama, saat diklik muncul modal berisi keterangan sistem informasi statistik Klaten
+            document.getElementById("judulUtama").addEventListener("click", () => {
+                showInfo("Sistem Informasi Statistik Klaten\nPlatform penyajian data statistik interaktif Kabupaten Klaten tahun 2024.");
+            });
+            //Berfungsi untuk menampilkan modal dan menulis informasi ke dalamnya
+            function showInfo(info) {
+                document.getElementById("modalInfo").innerText = info;
+                document.getElementById("myModal").style.display = "flex";
+            }
+            //Berfungsi untuk menutup modal saat tombol "×" ditekan
+            function closeModal() {
+                document.getElementById("myModal").style.display = "none";
+            }
+            //Bagian ini mengatur interaksi pada menu kategori di sisi kiri, ketika salah satu menu diklik, tampil modal berisi nama kategori yang dipilih, dan menu yang sedang aktif akan diberi efek visual
+            const menuItems = document.querySelectorAll(".list il");
+            menuItems.forEach(item => {
+                item.addEventListener("click", () => {
+                menuItems.forEach(i => i.classList.remove("active"));
+                item.classList.add("active");
+                //Menampilakn modal dengan nama kategori
+                showInfo("Kategori: " + item.innerText);
+            });
+        });
+        //Menutup tag script yaitu semua kode JavaScript-->
+        </script>
+    <!--Menutup div container utama yang membungkus seluruh konten halaman-->
+    </div>
+<!--Menutup body halaman, tempat semua elemen yang terlihat di browser-->
+</body>
+<!--Menutup dokumen HTML secara keseluruhan-->
+</html>
